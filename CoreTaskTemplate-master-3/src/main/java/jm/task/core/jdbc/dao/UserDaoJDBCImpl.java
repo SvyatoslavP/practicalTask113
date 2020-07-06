@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private static final Connection connection = Util.getMySQLConnection();
-    private static PreparedStatement statement = null;
+    private Connection connection = Util.getMySQLConnection();
+    private PreparedStatement statement = null;
 
     public UserDaoJDBCImpl() {
 
@@ -18,9 +18,9 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
         try {
-            statement = connection.prepareStatement("DROP TABLE IF EXISTS mytableusers");
-            statement.execute();
-            statement = connection.prepareStatement("CREATE TABLE mytableusers" +
+//            statement = connection.prepareStatement("DROP TABLE IF EXISTS mytableusers");
+//            statement.execute();
+            statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS mytableusers" +
                     "(" +
                     "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                     "name VARCHAR(30)," +
