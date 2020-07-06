@@ -10,16 +10,13 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
     private Connection connection = Util.getMySQLConnection();
-    private PreparedStatement statement = null;
 
     public UserDaoJDBCImpl() {
-
     }
 
     public void createUsersTable() {
+        PreparedStatement statement = null;
         try {
-//            statement = connection.prepareStatement("DROP TABLE IF EXISTS mytableusers");
-//            statement.execute();
             statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS mytableusers" +
                     "(" +
                     "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
@@ -40,6 +37,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
+        PreparedStatement statement = null;
         try {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement("DROP TABLE IF EXISTS mytableusers");
@@ -63,6 +61,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
+        PreparedStatement statement = null;
         try {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement("INSERT INTO mytableusers(name, lastName, age) "
@@ -94,6 +93,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
+        PreparedStatement statement = null;
         try {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement("DELETE FROM mytableusers WHERE Id =" + id);
@@ -119,6 +119,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
@@ -150,6 +151,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
+        PreparedStatement statement = null;
         try {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement("TRUNCATE TABLE mytableusers");
