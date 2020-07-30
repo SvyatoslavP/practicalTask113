@@ -1,7 +1,9 @@
 package hiber.dao;
 
 import hiber.model.User;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,25 +19,56 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public void add(User user) {
-        sessionFactory.getCurrentSession().save(user);
+        Session session = sessionFactory.openSession();
+        final Transaction transaction = session.getTransaction();
+        try {
+            sessionFactory.getCurrentSession().save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        } finally {
+            session.close();
+        }
+
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<User> listUsers() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
+        Session session = sessionFactory.openSession();
+        final Transaction transaction = session.getTransaction();
+        Query query = null;
+        try {
+            query = sessionFactory.getCurrentSession().createQuery("from User");
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        } finally {
+            session.close();
+        }
         return query.getResultList();
     }
 
     @Override
     public List<User> getTheUserByHisCar(String number, int series) {
-        Query query = sessionFactory.getCurrentSession().createQuery(
-                "SELECT u FROM User u " +
-                        "JOIN FETCH u.car " +
-                        "WHERE car_number = :paramNumber and car_series = :paramSeries");
-        query.setParameter("paramNumber", number);
-        query.setParameter("paramSeries", series);
+        Session session = sessionFactory.openSession();
+        final Transaction transaction = session.getTransaction();
+        Query query = null;
+        transaction.begin();
+        try {
+            query = sessionFactory.getCurrentSession().createQuery(
+                    "SELECT u FROM User u " +
+                            "JOIN FETCH u.car " +
+                            "WHERE car_number = :paramNumber and car_series = :paramSeries");
+            query.setParameter("paramNumber", number);
+            query.setParameter("paramSeries", series);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        } finally {
+            session.close();
+        }
         return query.getResultList();
-
     }
 }
