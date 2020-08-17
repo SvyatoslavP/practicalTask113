@@ -1,15 +1,15 @@
 package ru.panifidkin.crud.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.panifidkin.crud.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
-
-@Repository
+@Component
 public class UserDaoImpl implements UserDao {
 
     @Autowired
