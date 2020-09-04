@@ -21,17 +21,13 @@
     <c:if test="${!empty user.username}">
     <input type="hidden" name="id" value="${user.id}">
     </c:if>
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name">
+    <label>Name<input value="${user.username}" type="text" name="name" id="name"></label>
 
-    <label for="lastName">lastName</label>
-    <input type="text" name="lastName" id="lastName">
+    <label>lastName<input value="${user.lastName}" type="text" name="lastName" id="lastName"></label>
 
-    <label for="age">Age</label>
-    <input type="text" name="age" id="age">
+    <label>Age<input value="${user.age}" type="text" name="age" id="age"></label>
 
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password">
+    <label>Password<input type="password" name="password" id="password"></label>
 
         <c:if test="${empty user.username}">
             <input type="submit" value="Add new user">

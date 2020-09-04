@@ -29,6 +29,7 @@
 		<th>name</th>
 		<th>lastname</th>
 		<th>age</th>
+		<th>role</th>
 		<th>action</th>
 	</tr>
 
@@ -38,6 +39,9 @@
 			<td>${user.username}</td>
 			<td>${user.lastName}</td>
 			<td>${user.age}</td>
+			<td><c:forEach var="role" items="${user.roles}">
+				<p>${role.role}</p>
+			</c:forEach></td>
 			<td>
 
 				<a href="/systems/edit/${user.id}">edit</a>

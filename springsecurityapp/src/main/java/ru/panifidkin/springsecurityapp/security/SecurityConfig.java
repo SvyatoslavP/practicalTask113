@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -23,13 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
-//        ADMIN, MANAGER, EMPLOYEE : Svyat Password : 123
-//        MANAGER, EMPLOYEE : Timyr Password : 321
-//        EMPLOYEE : Alex Password : 111
-//        MANAGER, EMPLOYEE : Zahar Password : 777
-
+        auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
+//        ADMIN: Svyat password :123
+//        EMPLOYEE: Timyr password :321
     }
 
     @Override
@@ -40,7 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/employees").hasRole("EMPLOYEE")
-                .antMatchers("/leaders/**").hasRole("MANAGER")
                 .antMatchers("/systems/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
@@ -51,12 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/")
                 .permitAll();
-
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    public PasswordEncoder encoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
 }

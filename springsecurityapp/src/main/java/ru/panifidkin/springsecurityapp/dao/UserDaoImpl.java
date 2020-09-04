@@ -1,5 +1,7 @@
 package ru.panifidkin.springsecurityapp.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.panifidkin.springsecurityapp.model.Role;
 import ru.panifidkin.springsecurityapp.model.User;
@@ -16,6 +18,9 @@ import java.util.Set;
 
 @Component
 public class UserDaoImpl implements UserDao {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PersistenceUnit
     private EntityManagerFactory entityManagerFactory;
@@ -41,9 +46,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void add(User user) {
         Set<Role> defaultSet = new HashSet<>();
-        defaultSet.add(new Role(3L, "ROLE_EMPLOYEE"));
+        defaultSet.add(new Role(2L, "ROLE_EMPLOYEE"));
         EntityManager em = null;
-        System.out.println("МЕТОД ADD");
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
             em = entityManagerFactory.createEntityManager();
             em.getTransaction().begin();

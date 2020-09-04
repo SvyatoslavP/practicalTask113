@@ -13,12 +13,6 @@ public class AppController {
         return "landing";
     }
 
-    @GetMapping("/leaders")
-    public String showLeaders() {
-
-        return "leaders";
-    }
-
     @GetMapping("/employees")
     public String showHome() {
         return "home";
