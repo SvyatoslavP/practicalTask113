@@ -84,12 +84,16 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void edit(User user) {
         EntityManager em = null;
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Set<Role> defaultSet = new HashSet<>();
+        defaultSet.add(new Role(2L, "ROLE_EMPLOYEE"));
         try {
             em = entityManagerFactory.createEntityManager();
             em.getTransaction().begin();
             user.setName(user.getUsername());
             user.setLastName(user.getLastName());
             user.setAge(user.getAge());
+            user.setRoles(defaultSet);
             em.merge(user);
             em.getTransaction().commit();
         } catch (Exception e) {
